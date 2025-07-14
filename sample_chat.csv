@@ -1,0 +1,11 @@
+Timestamp,Sender,Message
+10:01 AM,Customer,"Hi, I ordered a laptop last week but it's still not delivered."
+10:03 AM,Agent,"I apologize for the delay. Let me check the status for you."
+10:04 AM,Customer,"Please do. I'm getting really frustrated."
+10:06 AM,Agent,"It looks like the package is delayed due to weather conditions."
+10:08 AM,Customer,"This is unacceptable. I need a refund if it doesn't arrive soon."
+10:10 AM,Agent,"I completely understand. I'll escalate this issue immediately."
+10:12 AM,Customer,"Thanks. I just want my product or my money back."
+10:15 AM,Agent,"We appreciate your patience. You should receive it in 2 days."
+10:18 AM,Customer,"Okay. I’ll wait for 2 more days."
+10:21 AM,Agent,"Thank you! Let us know if there's anything else we can help with."
