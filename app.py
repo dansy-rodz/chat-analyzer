@@ -32,7 +32,29 @@ if not st.session_state.logged_in:
 # ------------------- Chat Upload or Paste -------------------
 st.subheader("📥 Upload or Paste Chat Transcript")
 
-option = st.radio("Choose input method:", ["Paste chat text", "Upload .txt file"])
+from PIL import Image
+import pytesseract
+
+option = st.radio("Choose input method:", ["Paste chat text", "Upload .txt file", "Upload image (.jpg, .png)"])
+raw_chat = ""
+
+if option == "Paste chat text":
+    raw_chat = st.text_area("Paste chat here (WhatsApp-style format)", height=300)
+
+elif option == "Upload .txt file":
+    file = st.file_uploader("Upload chat text file", type=["txt"])
+    if file:
+        raw_chat = file.read().decode("utf-8")
+
+elif option == "Upload image (.jpg, .png)":
+    image_file = st.file_uploader("Upload a chat screenshot", type=["jpg", "jpeg", "png"])
+    if image_file:
+        st.image(image_file, caption="Uploaded Chat Image", use_column_width=True)
+        image = Image.open(image_file)
+        with st.spinner("🧠 Extracting text from image..."):
+            raw_chat = pytesseract.image_to_string(image)
+            st.success("✅ Text extracted from image!")
+            st.text_area("Extracted Chat Text", raw_chat, height=200)
 raw_chat = ""
 
 if option == "Paste chat text":
