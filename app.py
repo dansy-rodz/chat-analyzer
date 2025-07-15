@@ -6,8 +6,16 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from transformers import pipeline
 
+# ------------------- Safe OCR Import -------------------
+try:
+    import pytesseract
+    from PIL import Image
+    OCR_AVAILABLE = True
+except ImportError:
+    OCR_AVAILABLE = False
+
 # ------------------- App Settings -------------------
-st.set_page_config(page_title="Universal Chat Analyzer", layout="wide", page_icon="💬")
+st.set_page_config(page_title="Chat Analyzer", layout="wide", page_icon="💬")
 st.title("💬 Chat Transcript Analyzer for WhatsApp / Raw Text")
 
 # ------------------- Login -------------------
@@ -32,10 +40,13 @@ if not st.session_state.logged_in:
 # ------------------- Chat Upload or Paste -------------------
 st.subheader("📥 Upload or Paste Chat Transcript")
 
-from PIL import Image
-import pytesseract
+options = ["Paste chat text", "Upload .txt file"]
+if OCR_AVAILABLE:
+    options.append("Upload image (.jpg, .png)")
+else:
+    st.warning("⚠️ OCR not available in this environment (e.g., Streamlit Cloud).")
 
-option = st.radio("Choose input method:", ["Paste chat text", "Upload .txt file", "Upload image (.jpg, .png)"])
+option = st.radio("Choose input method:", options)
 raw_chat = ""
 
 if option == "Paste chat text":
@@ -46,7 +57,7 @@ elif option == "Upload .txt file":
     if file:
         raw_chat = file.read().decode("utf-8")
 
-elif option == "Upload image (.jpg, .png)":
+elif option == "Upload image (.jpg, .png)" and OCR_AVAILABLE:
     image_file = st.file_uploader("Upload a chat screenshot", type=["jpg", "jpeg", "png"])
     if image_file:
         st.image(image_file, caption="Uploaded Chat Image", use_column_width=True)
@@ -55,17 +66,9 @@ elif option == "Upload image (.jpg, .png)":
             raw_chat = pytesseract.image_to_string(image)
             st.success("✅ Text extracted from image!")
             st.text_area("Extracted Chat Text", raw_chat, height=200)
-raw_chat = ""
 
-if option == "Paste chat text":
-    raw_chat = st.text_area("Paste chat here (WhatsApp-style format)", height=300)
-elif option == "Upload .txt file":
-    file = st.file_uploader("Upload chat text file", type=["txt"])
-    if file:
-        raw_chat = file.read().decode("utf-8")
-
+# ------------------- Continue If Chat Is Present -------------------
 if raw_chat:
-    # ------------------- Parse Chat -------------------
     st.subheader("🔍 Parsed Chat Preview")
     lines = raw_chat.split("\n")
 
@@ -103,7 +106,7 @@ if raw_chat:
     issue_keywords = ["refund", "delay", "broken", "cancel", "late", "not working", "missing", "bad", "poor", "problem", "error", "fail", "issue"]
 
     def extract_issues(text):
-        found = [word for word in issue_keywords if re.search(r'\b' + re.escape(word) + r'\b', text.lower())]
+        found = [word for word in issue_keywords if re.search(r'\\b' + re.escape(word) + r'\\b', text.lower())]
         return ', '.join(found)
 
     df['Key_Issues'] = df['Message'].apply(extract_issues)
