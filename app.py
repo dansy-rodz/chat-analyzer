@@ -11,7 +11,7 @@ from transformers import pipeline
 import io
 
 # Optional: If running locally with tesseract installed at custom path
-# pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 st.set_page_config(page_title="Chat Analyzer", layout="wide")
 
