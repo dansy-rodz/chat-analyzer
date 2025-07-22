@@ -1,12 +1,9 @@
 services:
   - type: web
     name: chat-analyzer
-    env: python
-    buildCommand: |
-      apt-get update && apt-get install -y tesseract-ocr
-      pip install -r requirements.txt
-    startCommand: streamlit run app.py --server.port $PORT --server.enableCORS false
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.10
+    env: docker
     plan: free
+    branch: main
+    repo: https://github.com/dansy-rodz/chat-analyzer
+    dockerfilePath: Dockerfile
+    healthCheckPath: /
