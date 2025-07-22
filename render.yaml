@@ -4,6 +4,5 @@ services:
     env: docker
     plan: free
     branch: main
-    repo: https://github.com/dansy-rodz/chat-analyzer
-    dockerfilePath: Dockerfile
     healthCheckPath: /
+    dockerfilePath: Dockerfile

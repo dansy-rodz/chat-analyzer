@@ -7,4 +7,3 @@ wordcloud
 matplotlib
 transformers
 torch
-nltk
