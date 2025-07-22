@@ -3,6 +3,6 @@ services:
     name: chat-analyzer
     env: docker
     plan: free
+    repo: https://github.com/dansy-rodz/chat-analyzer
     branch: main
-    healthCheckPath: /
-    dockerfilePath: Dockerfile
+    autoDeploy: true
