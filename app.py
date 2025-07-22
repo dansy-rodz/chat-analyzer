@@ -1,16 +1,21 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
+import pytesseract
+import platform
 from textblob import TextBlob
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 from transformers import pipeline
-import pytesseract
-from PIL import Image
-import re
 import os
+import io
+
+# ✅ Add this block RIGHT HERE:
+if platform.system() == "Windows":
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Tesseract path for Windows
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # change if needed
+#pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # change if needed
 
 st.set_page_config(page_title="Chat Analyzer", layout="wide")
 st.title("💬 Universal Chat Analyzer")
